@@ -24,7 +24,6 @@ function onFormInput(event) {
 //     console.log(formData);
 //     localStorage.removeItem(STORAGE_KEY);
 //     event.currentTarget.reset();
-    
 // };
 
 function onFormSubmit(event) {
@@ -44,11 +43,13 @@ function onFormSubmit(event) {
 function populateTextArea() {
     const saveData = localStorage.getItem(STORAGE_KEY);
     const parsedData = JSON.parse(saveData);
-    // console.log(parsedData);
-    if (parsedData) {
+
+    if (parsedData.email) {
         refs.form.email.value = parsedData.email;
+    }
+    if (parsedData.message) {
         refs.form.message.value = parsedData.message;
-}
+    }
 }
 
 
