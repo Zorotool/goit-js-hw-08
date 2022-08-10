@@ -1,105 +1,37 @@
 import throttle from "lodash.throttle";
+const form = document.querySelector('form');
+const email = form.querySelector('input');
+const name = form.querySelector('textarea');
 
-const STORAGE_KEY = "feedback-form-state";
-let formData = {};
-const refs = {
-    form: document.querySelector('form'),
-    emailInput: document.querySelector ('input'),
-    textarea: document.querySelector('textarea'),
+const LOCALSTORAGE_KEY = 'feedback-form-state';
+
+form.addEventListener(
+  'input',
+  throttle(() => {
+    const textData = { email: email.value, name: name.value };
+    localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(textData));
+  }, 500)
+);
+
+form.addEventListener('submit', event => {
+  event.preventDefault();
+  console.log({ email: email.value, name: name.value });
+  form.reset();
+  localStorage.removeItem(LOCALSTORAGE_KEY);
+});
+
+// код з конспекта
+const load = key => {
+  try {
+    const serializedState = localStorage.getItem(key);
+    return serializedState === null ? undefined : JSON.parse(serializedState);
+  } catch (error) {
+    console.error('Get state error: ', error.message);
+  }
 };
 
-refs.form.addEventListener('submit', onFormSubmit);
-refs.form.addEventListener('input', throttle(onFormInput, 500));
-
-populateTextArea()
-
-function onFormInput(event) {
-    formData[event.target.name] = event.target.value;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
-    
-};
-
-function onFormSubmit(event) {
-    event.preventDefault();
-
-    const formElement = event.currentTarget.elements;
-    const email = formElement.email.value;
-    const message = formElement.message.value;
-    const Data = {
-        email,
-        message,
-    }
-    console.log(Data);
-    localStorage.removeItem(STORAGE_KEY);
-    event.currentTarget.reset();
-    formData = {};
+const storageFields = load(LOCALSTORAGE_KEY);
+if (storageFields) {
+  email.value = storageFields.email;
+  name.value = storageFields.name;
 }
-
-function populateTextArea() {
-    const textData = localStorage.getItem(STORAGE_KEY);
-    const parsedData = JSON.parse(textData);
-
-        if (parsedData && parsedData.email) {
-            refs.form.email.value = parsedData.email;
-        };
-        if (parsedData && parsedData.message) {
-            refs.form.message.value = parsedData.message;
-        }
-}
-
-// const savedData = localStorage.getItem("feedback-form-state");
-// const parsedData = JSON.parse(savedData);
-
-// if (parsedData) {
-//     form.email.value = parsedData.emailValue;
-//     form.message.value = parsedData.messageValue;
-// }
-
-// import throttle from "lodash.throttle";
-
-// const form = document.querySelector('form');
-// form.addEventListener('submit', handSubmit);
-// form.addEventListener('input', handlInput);
-
-// function handlInput(event) {
-//     const formElement = event.currentTarget.elements;
-//     const emailValue = formElement.email.value;
-//     const messageValue = formElement.message.value;
-//     const formData = {
-//         emailValue,
-//         messageValue,
-//     }
-//     localStorage.setItem("feedback-form-state", JSON.stringify(formData));
-// }
-
-// function handSubmit(event) {
-//     event.preventDefault();
-//     const formElement = event.currentTarget.elements;
-//     const emailValue = formElement.email.value;
-//     const messageValue = formElement.message.value;
-//     const formData = {
-//         emailValue,
-//         messageValue,
-//     }
-//     console.log(formData);
-//     event.currentTarget.reset();
-//     localStorage.removeItem("feedback-form-state");
-// }
-
-// const savedData = localStorage.getItem("feedback-form-state");
-// const parsedData = JSON.parse(savedData);
-
-// if (parsedData) {
-//     form.email.value = parsedData.emailValue;
-//     form.message.value = parsedData.messageValue;
-// }
-
-
-// function onFormSubmit(event) {
-//     event.preventDefault();
-//     formData[event.target.name] = event.target.value;
-//     console.log(formData);
-//     localStorage.removeItem(STORAGE_KEY);
-//     event.currentTarget.reset();
-    
-// };
