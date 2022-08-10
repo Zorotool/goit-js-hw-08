@@ -16,22 +16,23 @@ populateTextArea()
 function onFormInput(event) {
     formData[event.target.name] = event.target.value;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
-    formData = {};
+    
 };
 
 function onFormSubmit(event) {
     event.preventDefault();
 
-    const formElement = event.currentTarget.elements;
-    const email = formElement.email.value;
-    const message = formElement.message.value;
-    const formData = {
-        email,
-        message,
-    }
+    // const formElement = event.currentTarget.elements;
+    // const email = formElement.email.value;
+    // const message = formElement.message.value;
+    // const formData = {
+    //     email,
+    //     message,
+    // }
     console.log(formData);
     localStorage.removeItem(STORAGE_KEY);
     event.currentTarget.reset();
+    formData = {};
 }
 
 function populateTextArea() {
