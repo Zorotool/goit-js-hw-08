@@ -1,7 +1,7 @@
 import throttle from "lodash.throttle";
 
 const STORAGE_KEY = "feedback-form-state";
-const formData = {};
+let formData = {};
 const refs = {
     form: document.querySelector('form'),
     emailInput: document.querySelector ('input'),
@@ -16,19 +16,12 @@ populateTextArea()
 function onFormInput(event) {
     formData[event.target.name] = event.target.value;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+    formData = {};
 };
-
-// function onFormSubmit(event) {
-//     event.preventDefault();
-//     formData[event.target.name] = event.target.value;
-//     console.log(formData);
-//     localStorage.removeItem(STORAGE_KEY);
-//     event.currentTarget.reset();
-    
-// };
 
 function onFormSubmit(event) {
     event.preventDefault();
+
     const formElement = event.currentTarget.elements;
     const email = formElement.email.value;
     const message = formElement.message.value;
@@ -37,13 +30,13 @@ function onFormSubmit(event) {
         message,
     }
     console.log(formData);
-    event.currentTarget.reset();
     localStorage.removeItem(STORAGE_KEY);
+    event.currentTarget.reset();
 }
 
 function populateTextArea() {
-    const saveData = localStorage.getItem(STORAGE_KEY);
-    const parsedData = JSON.parse(saveData);
+    const textData = localStorage.getItem(STORAGE_KEY);
+    const parsedData = JSON.parse(textData);
 
         if (parsedData && parsedData.email) {
             refs.form.email.value = parsedData.email;
@@ -53,7 +46,13 @@ function populateTextArea() {
         }
 }
 
+// const savedData = localStorage.getItem("feedback-form-state");
+// const parsedData = JSON.parse(savedData);
 
+// if (parsedData) {
+//     form.email.value = parsedData.emailValue;
+//     form.message.value = parsedData.messageValue;
+// }
 
 // import throttle from "lodash.throttle";
 
@@ -93,3 +92,13 @@ function populateTextArea() {
 //     form.email.value = parsedData.emailValue;
 //     form.message.value = parsedData.messageValue;
 // }
+
+
+// function onFormSubmit(event) {
+//     event.preventDefault();
+//     formData[event.target.name] = event.target.value;
+//     console.log(formData);
+//     localStorage.removeItem(STORAGE_KEY);
+//     event.currentTarget.reset();
+    
+// };
