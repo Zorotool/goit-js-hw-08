@@ -24,6 +24,7 @@ function onFormInput(event) {
 //     console.log(formData);
 //     localStorage.removeItem(STORAGE_KEY);
 //     event.currentTarget.reset();
+    
 // };
 
 function onFormSubmit(event) {
@@ -44,14 +45,13 @@ function populateTextArea() {
     const saveData = localStorage.getItem(STORAGE_KEY);
     const parsedData = JSON.parse(saveData);
 
-    if (parsedData.email) {
-        refs.form.email.value = parsedData.email;
-    }
-    if (parsedData.message) {
-        refs.form.message.value = parsedData.message;
-    }
+        if (parsedData && parsedData.email) {
+            refs.form.email.value = parsedData.email;
+        };
+        if (parsedData && parsedData.message) {
+            refs.form.message.value = parsedData.message;
+        }
 }
-
 
 
 
