@@ -22,14 +22,14 @@ function onFormInput(event) {
 function onFormSubmit(event) {
     event.preventDefault();
 
-    // const formElement = event.currentTarget.elements;
-    // const email = formElement.email.value;
-    // const message = formElement.message.value;
-    // const formData = {
-    //     email,
-    //     message,
-    // }
-    console.log(formData);
+    const formElement = event.currentTarget.elements;
+    const email = formElement.email.value;
+    const message = formElement.message.value;
+    const Data = {
+        email,
+        message,
+    }
+    console.log(Data);
     localStorage.removeItem(STORAGE_KEY);
     event.currentTarget.reset();
     formData = {};
